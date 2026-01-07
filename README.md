@@ -25,7 +25,6 @@ uvicorn server:app --reload --host 0.0.0.0 --port 8080
 
 ```
 ## Shelf in Houdini
-1. Create your own custom tools in your shelf and copy `/ELDLibrary
-/Houdini_shelf_tools/ELD_Library_UI.py` to script
+1. Create your own custom tools in your shelf and copy `/Houdini_shelf_tools/ELD_Library_UI.py` to script
 2. check ipconfig in console and you have to set proper ip address to `API_BASE` in ELD_Library_UI.py
 <img width="768" height="689" alt="ELDLib_05" src="https://github.com/user-attachments/assets/c4a3038d-589d-4a90-b5a4-024563e681a4" />
