@@ -27,21 +27,17 @@ def _has_passwd(project: str) -> bool:
     return _passwd_path(project).exists()
 
 def _verify_password(project: str, plain_password: str) -> bool:
-    """
-    projects/<project>/.passwd を読み、bcryptで検証。
-    - .passwd が存在しなければ False
-    - 中身が bcrypt ではない（旧環境）の場合は「生文字列一致」も許容（互換目的）
-    """
+
     p = _passwd_path(project)
     if not p.exists():
         return False
     raw = p.read_bytes().strip()
-    # bcrypt 文字列はだいたい $2a/$2b などで始まる
+
     try:
         if raw.startswith(b"$2"):
             return bcrypt.checkpw(plain_password.encode("utf-8"), raw)
         else:
-            # 互換（平文格納だった場合）
+
             return plain_password.encode("utf-8") == raw
     except Exception:
         return False
@@ -79,7 +75,7 @@ def login(req: LoginRequest):
         raise HTTPException(status_code=404, detail="Project not found")
 
     if not _has_passwd(req.project):
-        # .passwd 未作成なら拒否（必要に応じて 200 で通す運用も可）
+
         raise HTTPException(status_code=401, detail="Password not set for project")
 
     if not _verify_password(req.project, req.password):
@@ -98,7 +94,7 @@ def manifest(authorization: str = Header(None)):
     if not proj_dir.exists():
         raise HTTPException(status_code=404, detail="Project not found")
 
-    # 簡易スキャン版の manifest 生成
+    #  manifest 生成
     exts = {"bgeo", "abc", "vdb", "cpio", "jpg", "png"}
     assets = []
     for root, _dirs, files in os.walk(proj_dir):
